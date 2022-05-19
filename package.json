@@ -1,6 +1,6 @@
 {
-	"name": "lazrius-foundry-template",
-	"version": "1.0.0",
+	"name": "pathbuilder2e-importer",
+	"version": "0.1.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
