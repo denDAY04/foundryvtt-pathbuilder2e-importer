@@ -1,10 +1,9 @@
-
 const PATHBUILDER_URL_BASE = "https://pathbuilder2e.com/json.php?id=";
 
 /**
  * Singleton gateway to the Pathbuilder2e API.
  */
-export class Gateway {
+class Gateway {
 	private static instance: Gateway;
 
 	private constructor() {
@@ -34,9 +33,9 @@ export class Gateway {
 }
 
 /**
- * JSON body of the response from Pathbuilder when importing a character
+ * Body of the response from the Pathbuilder API when importing a character.
  */
-export interface CharacterImport {
+interface CharacterImport {
 	/**
 	 * Indicates whether the request for the exported character was successful.
 	 */
@@ -46,3 +45,28 @@ export interface CharacterImport {
 	 */
 	build?: JSON;
 }
+
+class Translator {
+	private static instance: Translator;
+
+	private constructor() {
+		// singleton
+	}
+
+	/**
+	 * Get the singleton instance.
+	 * @returns the translator instance
+	 */
+	public static get(): Translator {
+		if (!Translator.instance) {
+			Translator.instance = new Translator();
+		}
+		return Translator.instance;
+	}
+
+	public translate(data: JSON): any {
+	}
+}
+
+
+export { Gateway, CharacterImport, Translator }
