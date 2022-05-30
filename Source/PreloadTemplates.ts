@@ -5,7 +5,7 @@ const PreloadTemplates = async (): Promise<Handlebars.TemplateDelegate<any>[]> =
 	// Place relative paths in array below, e.g.:
 	// const templates = [ rootPath + "actor/actor-sheet.hbs" ]
 	// This would map to our local folder of /Assets/Templates/Actor/actor-sheet.hbs
-	const templates: Array<string> = [];
+	const templates: Array<string> = [rootPath + 'actor/import-dialog.hbs'];
 	return loadTemplates(templates);
 }
 

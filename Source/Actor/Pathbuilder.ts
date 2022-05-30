@@ -33,9 +33,9 @@ class Gateway {
 }
 
 /**
- * Body of the response from the Pathbuilder API when importing a character.
+ * The typeBody of the response from the Pathbuilder API when importing a character.
  */
-interface CharacterImport {
+interface PathBuilder2ECharacter {
 	/**
 	 * Indicates whether the request for the exported character was successful.
 	 */
@@ -69,4 +69,4 @@ class Translator {
 }
 
 
-export { Gateway, CharacterImport, Translator }
+export { Gateway, PathBuilder2ECharacter, Translator }

@@ -1,4 +1,5 @@
-import Logger from "./Utils/Logger";
+import { Pb2eImportDialog } from "./Pb2eImportDialog";
+import Logger from "../Utils/Logger";
 
 
 export function listen(): void {
@@ -18,6 +19,8 @@ function addCharacterHeaderButton(characterSheet: any, buttons: ApplicationHeade
 
 function openDialog(event: Event): void {
 	Logger.Log("Opening dialog")
+	// TODO continue with https://hackmd.io/@akrigline/ByHFgUZ6u/%2FNBub2oFIT6yeh4NlOGTVFw
+	new Pb2eImportDialog({} as Document).render(true); 
 }
 
 

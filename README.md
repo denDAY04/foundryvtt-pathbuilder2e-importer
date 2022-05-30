@@ -22,3 +22,5 @@ FVTT module making for beginners - https://hackmd.io/@akrigline/ByHFgUZ6u/%2FTi7
 FVTT API - https://foundryvtt.com/api/
 
 FVTT Dev guides - https://foundryvtt.wiki/en/development/guides
+
+FVTT Pathfinder 2E system - https://gitlab.com/hooking/foundry-vtt---pathfinder-2e/
