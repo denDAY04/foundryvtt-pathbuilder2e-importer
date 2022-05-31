@@ -1,3 +1,6 @@
+import { type } from "os";
+import Logger from "../Utils/Logger";
+
 const PATHBUILDER_URL_BASE = "https://pathbuilder2e.com/json.php?id=";
 
 /**
@@ -35,7 +38,7 @@ class Gateway {
 /**
  * The typeBody of the response from the Pathbuilder API when importing a character.
  */
-interface PathBuilder2ECharacter {
+interface PathBuilder2ECharacterResponse {
 	/**
 	 * Indicates whether the request for the exported character was successful.
 	 */
@@ -65,8 +68,10 @@ class Translator {
 	}
 
 	public translate(data: JSON): any {
+		const translated: PathBuilder2ECharacter = JSON.parse(JSON.stringify(data));
+		console.log(translated);
+		// TODO how do we parse this to character
 	}
 }
 
-
-export { Gateway, PathBuilder2ECharacter, Translator }
+export { Gateway, PathBuilder2ECharacterResponse, Translator }

@@ -1,6 +1,6 @@
 import Globals from "../Globals";
 import Logger from "../Utils/Logger";
-import { Gateway, PathBuilder2ECharacter } from "./Pathbuilder";
+import { Gateway, PathBuilder2ECharacterResponse, Translator } from "./Pathbuilder";
 
 /**
  * Dialog object for the Pathbuilder2e importer.
@@ -16,18 +16,8 @@ export class Pb2eImportDialog extends FormApplication<FormApplicationOptions, Di
 
 		const gatewayResponse = await Gateway.get().fetchExportedCharacter(formData?.exportCode);
 		return gatewayResponse.json()
-			.then((characterImport: PathBuilder2ECharacter) => {
-				Logger.Ok("Gateway request success")
-				if (characterImport.success) {
-					Logger.Ok("Character imported successful");
-					Logger.Log(JSON.stringify(characterImport.build))
-				} else {
-					Logger.Err("Character imported failed");
-				}
-			})
-			.catch((err: any) => {
-				Logger.Err("Gateway request failed: " + err); 
-			});
+			.then(this.handleImportData)
+			.catch(this.handleImportError);
 	}
 	
 
@@ -45,6 +35,32 @@ export class Pb2eImportDialog extends FormApplication<FormApplicationOptions, Di
 		};
 
 		return foundry.utils.mergeObject(defaults, overrides);
+	}
+
+	handleImportData(characterImport: PathBuilder2ECharacterResponse): Promise<any> {
+		Logger.Log("Gateway request success")
+
+		if (characterImport.success && characterImport.build) {
+			Logger.Log("Character export fetch successful");
+			ui.notifications?.info("Character import successful");
+
+			Logger.Log(JSON.stringify(characterImport.build));
+			
+			Translator.get().translate(characterImport.build);
+		} else {
+			Logger.Err("Character export fetch error");
+			ui.notifications?.error("Character import failed", {permanent: true});
+		}
+
+		return Promise.resolve();
+	}
+
+	handleImportError(err: any): Promise<any> {
+		Logger.Err("Gateway request failed");
+		Logger.Log(err.toString())
+		ui.notifications?.error("Could not contact the Pathbuilder site", {permanent: true});
+
+		return Promise.resolve();
 	}
 	
 }
