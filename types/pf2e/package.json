@@ -1,0 +1,14 @@
+{
+    "name": "pf2e-types",
+    "version": "3.10.4",
+    "description": "Type definitions for the Foundry VTT Pathfinder 2. edition system, used by the import module",
+    "private": true,
+    "main": "index.d.ts",
+    "keywords": [
+        "foundry",
+        "pathfinder"
+    ],
+    "bundleDependencies": false,
+    "author": "denDAY04",
+    "license": "Apache-2.0"
+}

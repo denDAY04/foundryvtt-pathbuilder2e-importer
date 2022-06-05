@@ -1,4 +1,4 @@
-interface Attributes {
+export interface Attributes {
 	ancestryHp: number;
 	classHp: number;
 	bonusHp: number;
@@ -7,7 +7,7 @@ interface Attributes {
 	speedBonus: number;
 }
 
-interface Abilities {
+export interface Abilities {
 	str: number;
 	dex: number;
 	con: number;
@@ -16,7 +16,7 @@ interface Abilities {
 	cha: number;
 }
 
-interface Proficiencies {
+export interface Proficiencies {
 	classDC: number;
 	perception: number;
 	fortitude: number;
@@ -52,18 +52,18 @@ interface Proficiencies {
 	thievery: number;
 }
 
-type Feat = any[];
-type Lore = any[];
-type Equipment = any[];
+export type Feat = any[];
+export type Lore = any[];
+export type Equipment = any[];
 
-interface SpecificProficiencies {
+export interface SpecificProficiencies {
 	trained: unknown[];
 	expert: unknown[];
 	master: unknown[];
 	legendary: unknown[];
 }
 
-interface Weapon {
+export interface Weapon {
 	name: string;
 	qty: number;
 	prof: string;
@@ -75,19 +75,19 @@ interface Weapon {
 	runes: unknown[];
 }
 
-interface Money {
+export interface Money {
 	pp: number;
 	gp: number;
 	sp: number;
 	cp: number;
 }
 
-interface SpellGroup {
+export interface SpellGroup {
 	spellLevel: number;
 	list: string[];
 }
 
-interface SpellCaster {
+export interface SpellCaster {
 	name: string;
 	magicTradition: string;
 	spellcastingType: string;
@@ -98,21 +98,21 @@ interface SpellCaster {
 	perDay: number[];
 }
 
-interface Pet {
+export interface Pet {
 	type: string;
 	name: string;
 	specific: null | unknown;
 	abilities: unknown[];
 }
 
-interface ArmorClassTotal {
+export interface ArmorClassTotal {
 	acProfBonus: number;
 	acAbilityBonus: number;
 	acItemBonus: number;
 	acTotal: number;
 }
 
-interface PathBuilder2ECharacter {
+export interface PathBuilder2ECharacter {
 	name: string;
 	class: string;
 	level: number;

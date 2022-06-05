@@ -151,7 +151,7 @@ function buildTS() {
 const bundleModule = () => {
 	const debug = argv.dbg || argv.debug;
 	const bsfy = browserify(path.join(__dirname, "Source/index.ts"), { debug: debug });
-	return bsfy.on('error', Logger.Err)
+	return bsfy.on('error', Logger.err)
 		.plugin(tsify)
 		.bundle()
 		.pipe(source(path.join("dist", "bundle.js")))
@@ -202,7 +202,7 @@ const copyFiles = async() => {
 			return Promise.resolve();
 
 		const filter = (src: string, dest: string): boolean => {
-			Logger.Ok("Copying file: " + dest);
+			Logger.ok("Copying file: " + dest);
 			return true;
 		}
 
@@ -216,7 +216,7 @@ const copyFiles = async() => {
 const cleanDist = async () => {
 	if (argv.dbg || argv.debug)
 		return;
-	Logger.Log("Cleaning dist file clutter");
+	Logger.log("Cleaning dist file clutter");
 
 	const files: string[] = [];
 	const getFiles = async (dir: string) => {
@@ -237,7 +237,7 @@ const cleanDist = async () => {
 		if (file.endsWith("bundle.js") || file.endsWith(".css") || file.endsWith("module.json"))
 			continue;
 
-		Logger.Warn("Cleaning " + path.relative(process.cwd(), file));
+		Logger.warn("Cleaning " + path.relative(process.cwd(), file));
 		await fs.promises.unlink(file);
 	}
 }
@@ -299,11 +299,11 @@ const linkUserData = async () => {
 		}
 
 		if (argv.clean || argv.c) {
-			Logger.Warn(`Removing build in ${linkDir}`);
+			Logger.warn(`Removing build in ${linkDir}`);
 
 			fs.unlinkSync(linkDir);
 		} else if (!fs.existsSync(linkDir)) {
-			Logger.Ok(`Copying build to ${linkDir}`);
+			Logger.ok(`Copying build to ${linkDir}`);
 			fs.symlinkSync(path.resolve("./dist"), linkDir);
 		}
 		return Promise.resolve();
@@ -322,7 +322,7 @@ const linkUserData = async () => {
 async function packageBuild() {
 	const manifest = getManifest();
 	if (manifest === null) {
-		Logger.Err("Manifest file could not be loaded.");
+		Logger.err("Manifest file could not be loaded.");
 		throw Error();
 	}
 
@@ -330,7 +330,7 @@ async function packageBuild() {
 		try {
 			// Remove the package dir without doing anything else
 			if (argv.clean || argv.c) {
-				Logger.Warn("Removing all packaged files");
+				Logger.warn("Removing all packaged files");
 				fs.rmSync("dist", { force: true, recursive: true });
 				return;
 			}
@@ -345,8 +345,8 @@ async function packageBuild() {
 			const zip = archiver("zip", { zlib: { level: 9 } });
 
 			zipFile.on("close", () => {
-				Logger.Ok(zip.pointer() + " total bytes");
-				Logger.Ok(`Zip file ${zipName} has been written`);
+				Logger.ok(zip.pointer() + " total bytes");
+				Logger.ok(`Zip file ${zipName} has been written`);
 				return resolve(true);
 			});
 
@@ -426,7 +426,7 @@ const updateManifest = (cb: any) => {
 			return cb(Error("Error: Target version is identical to current version."));
 		}
 
-		Logger.Ok(`Updating version number to '${targetVersion}'`);
+		Logger.ok(`Updating version number to '${targetVersion}'`);
 
 		packageJson.version = targetVersion;
 		manifest.file.version = targetVersion;

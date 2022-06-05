@@ -1,5 +1,4 @@
-import { type } from "os";
-import Logger from "../Utils/Logger";
+import { PathBuilder2ECharacter } from "./PathbuilderTypes";
 
 const PATHBUILDER_URL_BASE = "https://pathbuilder2e.com/json.php?id=";
 

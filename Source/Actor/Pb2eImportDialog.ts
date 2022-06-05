@@ -1,23 +1,31 @@
 import Globals from "../Globals";
+import Announcer from "../Utils/Announcer";
 import Logger from "../Utils/Logger";
 import { Gateway, PathBuilder2ECharacterResponse, Translator } from "./Pathbuilder";
 
 /**
  * Dialog object for the Pathbuilder2e importer.
  */
-export class Pb2eImportDialog extends FormApplication<FormApplicationOptions, DialogData, Document> {
-	
+export class Pb2eImportDialog extends FormApplication<FormApplicationOptions, DialogData, CharacterPF2e> {
+
 	protected async _updateObject(event: Event, formData?: DialogData): Promise<unknown> {
 		if (!formData?.exportCode) {
-			throw new Error("Export code is required");
+			Announcer.error("Missing export code", true)
+			return Promise.reject();
 		}
 
-		logger.log("Importing character with code " + formData?.exportCode);
+		Logger.log("Importing character with code " + formData?.exportCode);
+		console.log(this.object);
 
-		const gatewayResponse = await Gateway.get().fetchExportedCharacter(formData?.exportCode);
-		return gatewayResponse.json()
-			.then(this.handleImportData)
-			.catch(this.handleImportError);
+		try {
+			const gatewayResponse = await Gateway.get().fetchExportedCharacter(formData?.exportCode);
+			return gatewayResponse.json()
+				.then(this.handleJsonData)
+				.catch(this.handleJsonError);
+		} catch(err) {
+			Announcer.error("Could not contact the Pathbuilder API", true);
+			return Promise.reject(err);
+		}
 	}
 	
 
@@ -37,30 +45,23 @@ export class Pb2eImportDialog extends FormApplication<FormApplicationOptions, Di
 		return foundry.utils.mergeObject(defaults, overrides);
 	}
 
-	handleImportData(characterImport: PathBuilder2ECharacterResponse): Promise<any> {
-		Logger.Log("Gateway request success")
-
+	handleJsonData(characterImport: PathBuilder2ECharacterResponse): Promise<any> {
 		if (characterImport.success && characterImport.build) {
-			Logger.Log("Character export fetch successful");
-			ui.notifications?.info("Character import successful");
+			Announcer.info("Character import successful");
 
-			Logger.Log(JSON.stringify(characterImport.build));
+			Logger.log(JSON.stringify(characterImport.build));
 			
 			Translator.get().translate(characterImport.build);
+			return Promise.resolve();
 		} else {
-			Logger.Err("Character export fetch error");
-			ui.notifications?.error("Character import failed", {permanent: true});
+			Announcer.error("Bad import data", true);
+			return Promise.reject();
 		}
-
-		return Promise.resolve();
 	}
 
-	handleImportError(err: any): Promise<any> {
-		Logger.Err("Gateway request failed");
-		Logger.Log(err.toString())
-		ui.notifications?.error("Could not contact the Pathbuilder site", {permanent: true});
-
-		return Promise.resolve();
+	handleJsonError(err: unknown): Promise<any> {
+		Announcer.error("Failed to read import data", true);
+		return Promise.reject(err);
 	}
 	
 }
